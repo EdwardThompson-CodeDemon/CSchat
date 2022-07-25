@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:padding="10dp"
+    android:orientation="vertical">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/participant_image"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignParentTop="true"
+        android:layout_gravity="center_horizontal"
+        android:elevation="20dp"
+        android:src="@drawable/ic_user"
+
+        android:transitionName="profile"
+        app:civ_border_color="#FF000000"
+        app:civ_border_width="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/participant_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Name"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/participant_image"
+        tools:layout_editor_absoluteY="10dp" />
+
+    <TextView
+        android:id="@+id/last_message"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="1"
+
+        android:text="This is the last message T"
+        app:layout_constraintBottom_toBottomOf="@+id/messageTypeIcon"
+        app:layout_constraintEnd_toStartOf="@+id/unread_messages"
+        app:layout_constraintStart_toEndOf="@+id/messageTypeIcon" />
+
+    <TextView
+        android:id="@+id/index"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="19:00"
+        android:textSize="12dp"
+
+        app:layout_constraintBottom_toBottomOf="@+id/participant_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/participant_name" />
+
+    <TextView
+        android:id="@+id/unread_messages"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/flow_layout_item_back"
+        android:gravity="center"
+        android:paddingLeft="5dp"
+        android:paddingTop="2dp"
+        android:paddingRight="5dp"
+        android:paddingBottom="5dp"
+        android:text="100"
+        app:layout_constraintBottom_toBottomOf="@+id/last_message"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/index" />
+
+    <ImageView
+        android:id="@+id/messageTypeIcon"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:tint="@color/grey"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/readStatusIcon"
+        app:layout_constraintTop_toBottomOf="@+id/participant_name"
+        app:srcCompat="@drawable/double_tick_50px" />
+
+    <ImageView
+        android:id="@+id/readStatusIcon"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/participant_image"
+        app:layout_constraintTop_toBottomOf="@+id/participant_name"
+        app:srcCompat="@drawable/ic_single_tick" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

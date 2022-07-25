@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:layout_height="match_parent"
+    tools:context=".activities.Signup">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Profile info"
+            android:textStyle="bold"
+            android:layout_gravity="center_horizontal"/>
+
+      <TextView
+          android:layout_marginTop="@dimen/vertical_field_spacing"
+          android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Please provide your name and optional profile photo"
+            android:layout_gravity="center_horizontal"/>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_marginTop="@dimen/vertical_field_spacing"
+            android:id="@+id/person_pic"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="3dp"
+            android:transitionName="profile"
+            android:elevation="20dp"
+
+            android:src="@drawable/ic_users"
+            app:civ_border_width="0dp"
+            app:civ_border_color="#FF000000"/>
+
+        <EditText
+            android:gravity="center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Display name"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/vertical_field_spacing"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Enter your phone number"
+            android:textStyle="bold"
+            android:layout_gravity="center_horizontal"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_marginTop="@dimen/vertical_field_spacing"
+            android:layout_height="wrap_content"
+            android:text="We wil send a verification message to this number"
+            android:layout_gravity="center_horizontal"/>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_marginTop="@dimen/vertical_field_spacing"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+    <Spinner
+        android:layout_width="100dp"
+        android:layout_gravity="bottom"
+        android:layout_height="wrap_content"
+        android:id="@+id/countrycode"/>
+    <EditText
+        android:gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_gravity="bottom"
+        android:layout_height="wrap_content"
+        android:hint="Display name"/>
+
+</LinearLayout>
+
+
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:id="@+id/verification_lay"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:id="@+id/otp_instructions"
+            android:textStyle="bold"
+            android:textSize="18dp"
+            android:text=""/>
+        <com.infideap.blockedittext.BlockEditText
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:id="@+id/otp_code"
+            android:layout_marginTop="@dimen/vertical_field_spacing"
+
+
+            android:padding="5dp"
+            android:visibility="visible"
+            app:bet_numberOfBlock="4"
+            app:bet_separatorCharacter="-"
+            app:bet_showCardIcon="true"
+
+
+
+
+            app:bet_hint="Confirmation code"
+            app:bet_textSize="8sp"
+
+
+
+            ></com.infideap.blockedittext.BlockEditText>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/vertical_field_spacing"
+            android:weightSum="2"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@color/colorAccent"
+                android:text="Resend Code "/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:id="@+id/counter"
+                android:gravity="right"
+                android:text="1:20 min left"/>
+
+
+        </LinearLayout>
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="match_parent"
+            android:layout_margin="20dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/sign_in"
+            android:textColor="@color/white"
+            android:text=" Sign in"/>
+
+    </LinearLayout>
+</LinearLayout>

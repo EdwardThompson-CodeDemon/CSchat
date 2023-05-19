@@ -16,11 +16,12 @@
         android:paddingBottom="10dp"
         android:layout_height="wrap_content">
         <include
-            android:id="@+id/game_invite_lay"
-            layout="@layout/item_conversation_game_invite_message"
-            android:layout_width="match_parent"
+            android:id="@+id/audio_lay"
+            layout="@layout/item_audio_message"
+            android:layout_width="300dp"
             android:layout_marginBottom="10dp"
-android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+android:visibility="visible"
             android:layout_height="wrap_content" />
 
         <TextView
@@ -34,7 +35,7 @@ android:visibility="gone"
 
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/game_invite_lay"
+            app:layout_constraintTop_toBottomOf="@+id/audio_lay"
             app:layout_constraintWidth_max="wrap"
             app:layout_constraintWidth_percent="0.8" />
 

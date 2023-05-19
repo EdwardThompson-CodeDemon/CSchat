@@ -16,8 +16,11 @@ import static sparta.realm.realmclient.RealmClientServiceManager.convertImplicit
 public class RealmClientSyncOverride extends RealmClientCallbackInterface.Stub {
 
     public static RealmClientServiceManager rcsm;
-public String serverAddress="3.16.186.183";
-public int serverPort=8890;
+public String serverAddress="20.216.187.240";
+public String serverAddress__="";
+public String serverAddress2__="𓀴";
+//public int serverPort=8891;//v1 server
+public int serverPort=8892;//v2 server
 
 
     public void Initialize(Stub vs){
@@ -56,8 +59,10 @@ public void download(String service_id){
    public void upload(String service_id){
       new Thread(new Runnable() {
           @Override
-          public void run() {
-              rcsm.upload(service_id);
+         public void run() {
+              if(rcsm!=null){
+                  rcsm.upload(service_id);
+              }
 
           }
       }).start();

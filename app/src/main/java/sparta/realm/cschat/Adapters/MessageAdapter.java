@@ -1,6 +1,8 @@
 package sparta.realm.cschat.Adapters;
 
 import android.content.Context;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,14 +18,24 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.realm.annotations.sync_status;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
+import rm.com.audiowave.AudioWaveView;
+import rm.com.audiowave.OnProgressListener;
+import sparta.realm.DataManagement.Models.Query;
 import sparta.realm.Realm;
+import sparta.realm.Services.DatabaseManager;
 import sparta.realm.cschat.Globals;
 import sparta.realm.cschat.Models.Member;
+import sparta.realm.cschat.Models.MemberImage;
 import sparta.realm.cschat.Models.MessageMessageStatus;
 import sparta.realm.cschat.Models.message;
 import sparta.realm.cschat.R;
+import sparta.realm.spartautils.svars;
+import sparta.realm.utils.Conversions;
 
 
 import static android.view.LayoutInflater.from;
@@ -84,31 +96,80 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     private class Holder extends RecyclerView.ViewHolder {
         TextView text, time;
-        ImageView read_status_icon;
-        ConstraintLayout main, game_invite_lay;
+        ImageView read_status_icon,play_icon,user_icon;
+        ConstraintLayout main, audio_lay;
 
         /////Event invite//////////
-        TextView gameName, gameScheduledStartTime;
-        Button accept, decline;
+        TextView audio_len, current_audio_position;
+        AudioWaveView waveView;
 
         public int position;
 
         Holder(View itemView) {
             super(itemView);
-            accept = itemView.findViewById(R.id.accept);
-            decline = itemView.findViewById(R.id.decline);
-            gameScheduledStartTime = itemView.findViewById(R.id.game_scheduled_start_time);
-            gameName = itemView.findViewById(R.id.game_name);
-            game_invite_lay = itemView.findViewById(R.id.game_invite_lay);
+            waveView = itemView.findViewById(R.id.wave);
+            audio_len = itemView.findViewById(R.id.audio_len);
+//            current_audio_position = itemView.findViewById(R.id.current_audio_position);
+            audio_lay = itemView.findViewById(R.id.audio_lay);
             main = itemView.findViewById(R.id.main);
             text = (TextView) itemView.findViewById(R.id.text);
             time = (TextView) itemView.findViewById(R.id.index);
             read_status_icon = itemView.findViewById(R.id.read_status_icon);
-            accept.setOnClickListener(v -> messageActionListener.onMessageGameInviteAccepted(items.get(position).game_invite_tr));
-            decline.setOnClickListener(v -> messageActionListener.onMessageGameInviteDeclined(items.get(position).game_invite_tr));
+            play_icon = itemView.findViewById(R.id.play_icon);
+            user_icon = itemView.findViewById(R.id.partner_icon);
             itemView.setOnClickListener(v -> messageActionListener.onMessageClicked(position, items.get(position)));
-        }
+            play_icon.setOnClickListener(v ->playaRecoding(svars.current_app_config(Realm.context).appDataFolder+items.get(position).file));
 
+
+        }
+        public void playaRecoding(String filePath) {
+            MediaPlayer mp = new MediaPlayer();
+            try {
+                mp.setDataSource(filePath);
+                mp.prepare();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            mp.start();
+            Timer timer = new Timer();
+            timer.scheduleAtFixedRate(new TimerTask() {
+                @Override
+                public void run() {
+                    waveView.setProgress(mp.getCurrentPosition());
+                }
+            },0,10);
+
+            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mediaPlayer) {
+                    mp.reset();
+                  try{
+                      timer.cancel();
+                  }catch (Exception ex){}
+
+                }
+            });
+            mp.setVolume(10, 10);
+
+
+                waveView.setOnProgressListener(new OnProgressListener() {
+                    @Override
+                    public void onStartTracking(float v) {
+
+                    }
+
+                    @Override
+                    public void onStopTracking(float v) {
+
+                    }
+
+                    @Override
+                    public void onProgressChanged(float v, boolean b) {
+                        mp.seekTo((int) v);
+                    }
+                });
+
+        }
         public void populate(int position) {
             this.position = position;
             message m = items.get(position);
@@ -157,16 +218,39 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 main.setLayoutParams(parms);
                 read_status_icon.setVisibility(View.GONE);
 
+
+            }
+
+            if(m.message_type.equals(""+message.MessageType.Audio.ordinal())){
+                MediaPlayer mp = new MediaPlayer();
+                try {
+                    mp.setDataSource(svars.current_app_config(Realm.context).appDataFolder+m.file);
+                    mp.prepare();
+                    audio_len.setText((mp.getDuration() / 1000f)+"");
+                    mp.release();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                audio_lay.setVisibility(View.VISIBLE);
+                waveView.setRawData(DatabaseManager.get_file_data(svars.current_app_config(Realm.context).appDataFolder+items.get(position).file));
+                try {
+                    MemberImage profile_photo = Realm.databaseManager.loadObject(MemberImage.class, new Query().setTableFilters("member_transaction_no='" +(myself.transaction_no.equalsIgnoreCase(m.source)? myself.transaction_no:m.source) + "'"));
+
+                    user_icon.setImageURI(Uri.parse(Uri.parse(svars.current_app_config(context).appDataFolder) + profile_photo.image));
+
+                } catch (Exception ex) {
+
+                }
+            }else {
+                audio_lay.setVisibility(View.GONE);
             }
 
 
 
-                game_invite_lay.setVisibility(View.GONE);
-
-
             text.setText(m.text);
 
-            time.setText(m.reg_time);
+//            time.setText(Conversions.getUserDisplayDateFromDBTime(m.reg_time));
+            time.setText((m.reg_time));
 
         }
 

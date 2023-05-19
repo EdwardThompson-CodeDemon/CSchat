@@ -9,8 +9,8 @@ import static com.realm.annotations.SyncDescription.service_type.Download;
 import static com.realm.annotations.SyncDescription.service_type.Upload;
 
 @DynamicClass(table_name = "messages")
-@SyncDescription(service_id = "11", service_name = "Messages", service_type = Download, chunk_size = 50000)
-@SyncDescription(service_id = "12", service_name = "Messages", service_type = Upload, chunk_size = 50000)
+@SyncDescription(service_id = "11", service_name = "Messages", service_type = Download, chunk_size = 50000,storage_mode_check = true)
+@SyncDescription(service_id = "12", service_name = "Messages", service_type = Upload, chunk_size = 50000,storage_mode_check = true)
 public class message extends RealmModel {
     public message() {
 
@@ -19,7 +19,7 @@ public class message extends RealmModel {
     public enum MessageType {
         Unavailable,
         TextObject,
-        GameInvite
+        Audio
 
     }
 
@@ -46,12 +46,15 @@ public class message extends RealmModel {
     @DynamicProperty(json_key = "game_invite_tr")
     public String game_invite_tr;
 
-    @DynamicProperty(json_key = "file")
+    @DynamicProperty(json_key = "file", storage_mode = DynamicProperty.storage_mode.FilePath)
     public String file;
 
 
     @DynamicProperty(json_key = "file_type")
     public String file_type;
+
+   @DynamicProperty(json_key = "audio_length")
+    public String audio_length;
 
 
 

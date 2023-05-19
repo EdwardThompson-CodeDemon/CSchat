@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/game_invite_lay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+      >
+
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/partner_icon"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+
+            android:lineSpacingExtra="2dp"
+            android:text="Am ok love you?"
+            android:src="@drawable/ic_user"
+
+            app:layout_constraintBottom_toBottomOf="@+id/audio_len"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_max="wrap"
+            app:layout_constraintWidth_percent="0.8" />
+  <ImageView
+            android:id="@+id/play_icon"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+
+            android:lineSpacingExtra="2dp"
+            android:src="@drawable/baseline_play_arrow_24"
+
+            app:layout_constraintBottom_toBottomOf="@+id/audio_len"
+            app:layout_constraintStart_toEndOf="@id/partner_icon"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_max="wrap"
+            app:layout_constraintWidth_percent="0.8" />
+
+
+
+        <rm.com.audiowave.AudioWaveView
+            app:layout_constraintStart_toEndOf="@id/play_icon"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/partner_icon"
+            android:id="@+id/wave"
+            android:layout_width="0dp"
+            android:layout_height="32dp"
+            app:animateExpansion="false"
+            app:chunkWidth="3dp"
+            app:chunkHeight="24dp"
+            app:minChunkHeight="2dp"
+            app:chunkSpacing="1dp"
+            app:chunkRadius="1dp"
+            app:touchable="true"
+            app:waveColor="@android:color/white"
+            />
+
+
+
+        <TextView
+            android:id="@+id/audio_len"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0:02"
+            app:layout_constraintStart_toEndOf="@id/play_icon"
+            app:layout_constraintTop_toBottomOf="@id/wave" />
+
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+

@@ -113,10 +113,9 @@ public class ConversationsAdapter extends RecyclerView.Adapter<RecyclerView.View
             }
             message last_message = Realm.databaseManager.loadObject(message.class, "select * from messages m where (m.source='" + c.participant_tr + "' OR m.destination='" + c.participant_tr + "') AND (m.source='" + myself.transaction_no + "' OR m.destination='" + myself.transaction_no + "') order by m.reg_time DESC LIMIT 1 ");
                  try{
-                if (last_message.message_type != null && last_message.message_type.equalsIgnoreCase(message.MessageType.GameInvite.ordinal() + "")) {
-                    Event g = Realm.databaseManager.loadObject(Event.class, "select * from games where transaction_no IN(select game_transaction_no from game_invites where transaction_no='" + last_message.game_invite_tr + "')");
+                if (last_message.message_type != null && last_message.message_type.equalsIgnoreCase(message.MessageType.Audio.ordinal() + "")) {
 
-                    this.last_message.setText("Event invite: " + g.name + " at " + g.scheduled_start_time);
+                    this.last_message.setText("Audio  " + last_message.audio_length);
                 } else {
 
                     this.last_message.setText(last_message.text);

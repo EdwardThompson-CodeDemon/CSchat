@@ -1,5 +1,6 @@
 package sparta.realm.cschat;
 
+import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 
 
@@ -14,6 +15,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.ParcelFileDescriptor;
+import android.os.PowerManager;
 import android.os.RemoteException;
 import android.util.Log;
 
@@ -26,6 +28,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -44,6 +48,7 @@ import sparta.realm.cschat.Models.Member;
 import sparta.realm.cschat.Models.MessageMessageStatus;
 import sparta.realm.cschat.Models.OnlineStatus;
 import sparta.realm.cschat.Models.message;
+import sparta.realm.cschat.activities.ConversationsVP;
 import sparta.realm.spartautils.svars;
 import sparta.realm.utils.AppConfig;
 
@@ -84,7 +89,8 @@ public class ChatApplication extends Application {
         saver.commit();
         svars.set_sync_interval_mins(this, 60);
 //        DatabaseManager.database.execSQL("DELETE FROM online_status");
-//        DatabaseManager.database.execSQL("DROP TABLE messages");
+//        DatabaseManager.database.execSQL("DELETE FROM message_message_status");
+//
 //        DatabaseManager.database.execSQL("DELETE FROM messages");
 //        DatabaseManager.database.execSQL("DELETE FROM member_info_table");
 //        DatabaseManager.database.execSQL("DELETE FROM member_image_table");
@@ -204,12 +210,12 @@ public class ChatApplication extends Application {
                             e.printStackTrace();
                         }
                         messagingStyle.addMessage(notificationMessage);
-                    } else if (mess.message_type.equalsIgnoreCase(message.MessageType.GameInvite.ordinal() + "")) {
+                    } else if (mess.message_type.equalsIgnoreCase(message.MessageType.Audio.ordinal() + "")) {
                         NotificationCompat.MessagingStyle.Message notificationMessage =
                                 null;
                         try {
                             notificationMessage = new NotificationCompat.MessagingStyle.Message(
-                                    "Event Invite",
+                                    "Audio",
                                     svars.sdf_db_time.parse(mess.reg_time).getTime(),
                                     me
                             );
@@ -235,12 +241,12 @@ public class ChatApplication extends Application {
                         }
                         messagingStyle.addMessage(notificationMessage);
 
-                    } else if (mess.message_type.equalsIgnoreCase(message.MessageType.GameInvite.ordinal() + "")) {
+                    } else if (mess.message_type.equalsIgnoreCase(message.MessageType.Audio.ordinal() + "")) {
                         NotificationCompat.MessagingStyle.Message notificationMessage =
                                 null;
                         try {
                             notificationMessage = new NotificationCompat.MessagingStyle.Message(
-                                    "Event invite",
+                                    "Audio",
                                     svars.sdf_db_time.parse(mess.reg_time).getTime(),
                                     m.name
                             );
@@ -285,6 +291,8 @@ public class ChatApplication extends Application {
 
     public static Boolean online = false;
     public static long last_typing_time = 0;
+    public static String last_typing_target_transaction_no = "";
+    public static String last_recording_target_transaction_no = "";
     public static long last_recording_audio_time = 0;
 
     public static void Initialize(SyncInterface syncInterface) {
@@ -320,7 +328,8 @@ public class ChatApplication extends Application {
 
             @Override
             public void onServiceSynchronizationCompleted(String service_id) throws RemoteException {
-                if (service_id.equalsIgnoreCase("11") || service_id.equalsIgnoreCase("12")) {
+                if (Globals.myself()!=null&&(service_id.equalsIgnoreCase("11") || service_id.equalsIgnoreCase("12"))) {
+                    Log.e("RSCO", "Received messo");
                     Query unread_messages_query = new Query().setTableFilters("destination='" + Globals.myself().transaction_no + "'", "transaction_no not in (select message_tr from message_message_status where message_status ='" + MessageMessageStatus.MessageStatus.Delivered.ordinal() + "')");
                     ArrayList<message> unreadMessages = Realm.databaseManager.loadObjectArray(message.class, unread_messages_query);
                     Iterator<message> it = unreadMessages.iterator();
@@ -341,7 +350,6 @@ public class ChatApplication extends Application {
                 Realm.databaseManager.insertObject(messageMessageStatus);
                 sendChannel1Notification(getAppContext());
             }
-
 
             @Override
             public void onSynchronizationCompleted() throws RemoteException {
@@ -385,50 +393,89 @@ public class ChatApplication extends Application {
 //        InitializeOnlineStatusChecker();
 
     }
+    public static String getProcessName() {
+        if (Build.VERSION.SDK_INT >= 28)
+            return Application.getProcessName();
+
+        // Using the same technique as Application.getProcessName() for older devices
+        // Using reflection since ActivityThread is an internal API
+
+        try {
+            @SuppressLint("PrivateApi")
+            Class<?> activityThread = Class.forName("android.app.ActivityThread");
+
+            // Before API 18, the method was incorrectly named "currentPackageName", but it still returned the process name
+            // See https://github.com/aosp-mirror/platform_frameworks_base/commit/b57a50bd16ce25db441da5c1b63d48721bb90687
+            String methodName = Build.VERSION.SDK_INT >= 18 ? "currentProcessName" : "currentPackageName";
+
+            Method getProcessName = activityThread.getDeclaredMethod(methodName);
+            return (String) getProcessName.invoke(null);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        } catch (InvocationTargetException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 public static  void InitializeOnlineStatusChecker()
 {
+//    Log.e(logTag,"Process name:"+getProcessName());
+    if(!getProcessName().equals("sparta.realm.cschat"))return;
     new Timer().schedule(new TimerTask() {
         @Override
         public void run() {
-            if (isActivityRunning(ConversationActivity.class) || isActivityRunning(Communication.class)) {
-                if (svars.is_server_online(rcso.serverAddress)) {
-                    Log.e(logTag, " CONVERSATION OR COMMUNICATION IS RUNNING");
-                    long current_time = System.currentTimeMillis();
-                    long typing_time_diff_in_seconds = (current_time - last_typing_time) / 1000;
-                    long recording_time_diff_in_seconds = (current_time - last_recording_audio_time) / 1000;
-                    if (recording_time_diff_in_seconds < 3) {
-                        Realm.databaseManager.insertObject(new OnlineStatus(Globals.myself().transaction_no, OnlineStatus.onlineStatus.recording_audio));
+            try {
+                PowerManager pm = (PowerManager) appContext.getSystemService(Context.POWER_SERVICE);
+                boolean isScreenOn = pm.isInteractive();
+                if ((isActivityRunning(ConversationActivity.class) || isActivityRunning(ConversationsVP.class))&&isScreenOn) {
+                    if (svars.is_server_online(rcso.serverAddress)) {
+                        Log.e(logTag, " Conversation activities running");
+                        long current_time = System.currentTimeMillis();
+                        long typing_time_diff_in_seconds = (current_time - last_typing_time) / 1000;
+                        long recording_time_diff_in_seconds = (current_time - last_recording_audio_time) / 1000;
+                        if (recording_time_diff_in_seconds < 2) {
+                            Realm.databaseManager.insertObject(new OnlineStatus(Globals.myself().transaction_no, OnlineStatus.onlineStatus.recording_audio,last_recording_target_transaction_no));
 
-                    } else if (typing_time_diff_in_seconds < 3) {
-                        Realm.databaseManager.insertObject(new OnlineStatus(Globals.myself().transaction_no, OnlineStatus.onlineStatus.typing));
+                        } else if (typing_time_diff_in_seconds < 2) {
+                            Realm.databaseManager.insertObject(new OnlineStatus(Globals.myself().transaction_no, OnlineStatus.onlineStatus.typing,last_typing_target_transaction_no));
+
+                        } else {
+                            Realm.databaseManager.insertObject(new OnlineStatus(Globals.myself().transaction_no, OnlineStatus.onlineStatus.online));
+                        }
+                        rcso.upload("16");
+                        online = true;
+                    } else {
+                        Log.e(logTag, " SERVER NOT REACHABLE");
+
+                    }
+                } else {
+                    if (svars.is_server_online(rcso.serverAddress)) {
+                        Log.e(logTag, "Conversation activities not running !!!");
+                        if (online) {
+                            OnlineStatus lastOnlineStatus = Realm.databaseManager.loadObject(OnlineStatus.class, new Query().setTableFilters("member_transaction_no='" + Globals.myself().transaction_no + "'").addOrderFilters("reg_time",false));
+                          if(OnlineStatus.onlineStatus.values()[Integer.parseInt(lastOnlineStatus.online_status)]!= OnlineStatus.onlineStatus.offline) {
+                              Log.e(logTag, "Inserting Offline status !!!");
+                              Realm.databaseManager.insertObject(new OnlineStatus(Globals.myself().transaction_no, OnlineStatus.onlineStatus.offline));
+                              rcso.upload("16");
+                          }
+                            online = false;
+                        }
 
                     } else {
-                        Realm.databaseManager.insertObject(new OnlineStatus(Globals.myself().transaction_no, OnlineStatus.onlineStatus.online));
+                        Log.e(logTag, " SERVER NOT REACHABLE");
+
                     }
-                    rcso.upload("16");
-                    online = true;
-                } else {
-                    Log.e(logTag, " SERVER NOT REACHABLE");
-
                 }
-            } else {
-                if (svars.is_server_online(rcso.serverAddress)) {
-                    Log.e(logTag, " CONVERSATION AND COMMUNICATION IS not RUNNING");
-                    if (online) {
-                        Realm.databaseManager.insertObject(new OnlineStatus(Globals.myself().transaction_no, OnlineStatus.onlineStatus.offline));
-                        rcso.upload("16");
+            }catch (Exception ex){
+                Log.e(logTag, "Error creating online status:",ex);
 
-                        online = false;
-                    }
-
-                } else {
-                    Log.e(logTag, " SERVER NOT REACHABLE");
-
-                }
             }
         }
-    }, 5000, 1000 * 6);
+    }, 5000, 1000 * 15);
 }
     public static boolean isServiceRunning(Context act, Class<?> serviceClass) {
 //        Class<?> serviceClass=App_updates.class;

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:yourapp="http://schemas.android.com/apk/res-auto" >
+
+    <item
+        android:id="@+id/video_call_menu"
+        yourapp:showAsAction="always"
+        android:icon="@drawable/ic_baseline_videocam_24"
+        android:title="Video call"
+        android:visible="true"/>
+
+    <item
+        android:id="@+id/call_menu"
+        yourapp:showAsAction="always"
+        android:icon="@drawable/ic_baseline_local_phone_24"
+        android:title="Call"
+        />
+
+
+  <item
+        android:id="@+id/view_contact_menu"
+      yourapp:showAsAction="never"
+        android:title="View contact"
+        android:visible="true"/>
+
+ <item
+        android:id="@+id/media_menu"
+     yourapp:showAsAction="never"
+        android:title="Media,links and docs"
+        android:visible="true"/>
+
+ <item
+        android:id="@+id/search_menu"
+     yourapp:showAsAction="never"
+        android:title="Search"
+        android:visible="true"/>
+
+
+ <item
+        android:id="@+id/mute_menu"
+     yourapp:showAsAction="never"
+        android:title="Mute notifications"
+        android:visible="true"/>
+
+<item
+        android:id="@+id/disapearing_messages_menu"
+     yourapp:showAsAction="never"
+        android:title="Disappearing messages"
+        android:visible="true"/>
+
+<item
+        android:id="@+id/wallpaper_menu"
+     yourapp:showAsAction="never"
+        android:title="Wallpaper"
+        android:visible="true"/>
+
+<item
+        android:id="@+id/more_menu"
+     yourapp:showAsAction="never"
+        android:title="More"
+        android:visible="true"/>
+
+
+
+</menu>

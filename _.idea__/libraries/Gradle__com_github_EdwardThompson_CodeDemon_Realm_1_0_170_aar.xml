@@ -1,0 +1,24 @@
+<component name="libraryTable">
+  <library name="Gradle: com.github.EdwardThompson-CodeDemon:Realm:1.0.170@aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ddcbc58581d1bb0ebadf7b9a964bc7ba/jetified-Realm-1.0.170/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ddcbc58581d1bb0ebadf7b9a964bc7ba/jetified-Realm-1.0.170/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ddcbc58581d1bb0ebadf7b9a964bc7ba/jetified-Realm-1.0.170/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ddcbc58581d1bb0ebadf7b9a964bc7ba/jetified-Realm-1.0.170/jars/libs/activation.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ddcbc58581d1bb0ebadf7b9a964bc7ba/jetified-Realm-1.0.170/jars/libs/additionnal.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ddcbc58581d1bb0ebadf7b9a964bc7ba/jetified-Realm-1.0.170/jars/libs/androidprintsdk.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ddcbc58581d1bb0ebadf7b9a964bc7ba/jetified-Realm-1.0.170/jars/libs/btprintsdk.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ddcbc58581d1bb0ebadf7b9a964bc7ba/jetified-Realm-1.0.170/jars/libs/bugly_crash_release__2.1.3.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ddcbc58581d1bb0ebadf7b9a964bc7ba/jetified-Realm-1.0.170/jars/libs/com.datecs.fiscalprinter.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ddcbc58581d1bb0ebadf7b9a964bc7ba/jetified-Realm-1.0.170/jars/libs/DecodeWlt.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ddcbc58581d1bb0ebadf7b9a964bc7ba/jetified-Realm-1.0.170/jars/libs/dpuareu.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ddcbc58581d1bb0ebadf7b9a964bc7ba/jetified-Realm-1.0.170/jars/libs/jsch-0.1.52.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ddcbc58581d1bb0ebadf7b9a964bc7ba/jetified-Realm-1.0.170/jars/libs/mail.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ddcbc58581d1bb0ebadf7b9a964bc7ba/jetified-Realm-1.0.170/jars/libs/printersdk.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.EdwardThompson-CodeDemon/Realm/1.0.170/cfe5d547fbd3e1f2d25a47238519652200a31155/Realm-1.0.170-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

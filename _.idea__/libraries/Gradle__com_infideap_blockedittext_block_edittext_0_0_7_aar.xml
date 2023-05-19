@@ -1,0 +1,15 @@
+<component name="libraryTable">
+  <library name="Gradle: com.infideap.blockedittext:block-edittext:0.0.7@aar">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/39dc2303268436632c8bf6d3c09dbc04/jetified-block-edittext-0.0.7/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/39dc2303268436632c8bf6d3c09dbc04/jetified-block-edittext-0.0.7/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/39dc2303268436632c8bf6d3c09dbc04/jetified-block-edittext-0.0.7/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.infideap.blockedittext/block-edittext/0.0.7/1387bb6745d0fbad276cd078d6e3df2d5dbafecf/block-edittext-0.0.7-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.infideap.blockedittext/block-edittext/0.0.7/ecc2053371efc4ba11b752464d5d99ca91349dbf/block-edittext-0.0.7-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

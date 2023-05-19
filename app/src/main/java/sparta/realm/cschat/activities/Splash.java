@@ -56,7 +56,7 @@ public class Splash extends SpartaAppCompactActivity {
     protected void onResume() {
         super.onResume();
         if (checkPermissions(this)) {
-            File f = new File(svars.current_app_config(this).file_path_employee_data);
+            File f = new File(svars.current_app_config(this).appDataFolder);
             f.mkdirs();
             new Timer().schedule(new TimerTask() {
                 @Override
@@ -91,7 +91,8 @@ public class Splash extends SpartaAppCompactActivity {
             Manifest.permission.CAMERA,
             Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.ACCESS_COARSE_LOCATION,
-            Manifest.permission.READ_PHONE_STATE
+            Manifest.permission.READ_PHONE_STATE,
+            Manifest.permission.RECORD_AUDIO
     };
 
 
@@ -119,7 +120,15 @@ public class Splash extends SpartaAppCompactActivity {
 //
 //        }
 
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
 
+//            ActivityCompat.requestPermissions(context, new String[]{Manifest.permission.RECORD_AUDIO}, BuildDev.RECORD_AUDIO);
+
+        } else {
+
+//            startRecording();
+
+        }
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.SYSTEM_ALERT_WINDOW) != PackageManager.PERMISSION_GRANTED) {
 
 

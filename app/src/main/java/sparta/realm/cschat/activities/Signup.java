@@ -44,20 +44,19 @@ public class Signup extends SpartaAppCompactActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityUserSignupBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        String memberEmail=getIntent().getStringExtra("email");
-        currentMember=Realm.databaseManager.loadObject(Member.class,new Query().setTableFilters("UPPER(email)='"+memberEmail.toUpperCase()+"'"));
+        String memberEmail = getIntent().getStringExtra("email");
+        currentMember = Realm.databaseManager.loadObject(Member.class, new Query().setTableFilters("UPPER(email)='" + memberEmail.toUpperCase() + "'"));
 //        String input=\;
 //        String output=input.replace("\n","").replace("\\","").replace("\\","");
 //        Log.e(logTag,output);
         MemberImage memberImage;
-        if(currentMember!=null)
-        {
-            memberImage= Realm.databaseManager.loadObject(MemberImage.class,new Query().setTableFilters("member_transaction_no='"+currentMember.transaction_no+"'"));
-            currentMember.profile_photo=memberImage;
+        if (currentMember != null) {
+            memberImage = Realm.databaseManager.loadObject(MemberImage.class, new Query().setTableFilters("member_transaction_no='" + currentMember.transaction_no + "'"));
+            currentMember.profile_photo = memberImage;
         }
-             initUI();
-        currentMember=new Member();
-        currentMember.email=memberEmail;
+        initUI();
+        currentMember = new Member();
+        currentMember.email = memberEmail;
     }
 
     void initUI() {
@@ -71,21 +70,16 @@ public class Signup extends SpartaAppCompactActivity {
 //            intt.putExtra("camera_index", 1);
 //            intt.putExtra("camera_rotation", 90);
 //            startActivityForResult(intt, 1);
-                take_photo(1,"1");
+            take_photo(1, "1");
 
         });
 
-
         binding.signin.setOnClickListener(v -> {
-            currentMember.name=binding.displayName.getText().toString();
+            currentMember.name = binding.displayName.getText().toString();
             if (validated()) {
 
                 binding.loadingBar.setVisibility(View.VISIBLE);
-
- signupMember(currentMember.sync_var==null);
-
-
-
+                signupMember(currentMember.sync_var == null);
                 Globals.set_myself(currentMember);
                 start_activity(new Intent(act, Communication.class));
                 finish();
@@ -93,37 +87,34 @@ public class Signup extends SpartaAppCompactActivity {
 
         });
 
-
-
 //        boolean exists = confirmation_code.trim().equalsIgnoreCase(this.confirmation_code);
-        if(currentMember!=null)
-        {
-populate();
+        if (currentMember != null) {
+            populate();
         }
 
-
     }
-    void populate()
-    {
+
+    void populate() {
         binding.displayName.setText(currentMember.name);
         try {
 
-            binding.participantImage.setImageURI(Uri.parse(Uri.parse(svars.current_app_config(this).file_path_employee_data)+currentMember.profile_photo.image));
+            binding.participantImage.setImageURI(Uri.parse(Uri.parse(svars.current_app_config(this).file_path_employee_data) + currentMember.profile_photo.image));
             binding.participantImage.setColorFilter(null);
         } catch (Exception ex) {
 
         }
 
     }
-    void signupMember(Boolean newMember)
-    {
-      if(newMember){
-          Realm.databaseManager.insertObject(currentMember);
-          ChatApplication.rcso.upload("2");
-      }
+
+    void signupMember(Boolean newMember) {
+        if (newMember) {
+            Realm.databaseManager.insertObject(currentMember);
+            ChatApplication.rcso.upload("2");
+        }
         Realm.databaseManager.insertObject(currentMember.profile_photo);
-         ChatApplication.rcso.upload("4");
+        ChatApplication.rcso.upload("4");
     }
+
     boolean validated() {
         boolean ok = true;
 //        set_conditional_input_error2(ok, binding.nameEdt, "Invalid Name", binding.nameEdt.getText().toString().trim(), 3);
@@ -154,8 +145,6 @@ populate();
     protected boolean set_conditional_input_error2(boolean valid, EditText edt, String error, String input, int min_length) {
         if (input == null || input.length() < min_length) {
             try {
-
-
                 edt.setError(error, error_drawable);
                 edt.requestFocus();
             } catch (Exception ex) {
@@ -169,7 +158,6 @@ populate();
         } else {
             edt.setError(null);
 
-
         }
 
         return valid;
@@ -180,13 +168,12 @@ populate();
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        currentMember.profile_photo=new MemberImage();
-        currentMember.profile_photo.image=data.getStringExtra("ImageUrl");
-        currentMember.profile_photo.member_transaction_no=currentMember.transaction_no;
+        currentMember.profile_photo = new MemberImage();
+        currentMember.profile_photo.image = data.getStringExtra("ImageUrl");
+        currentMember.profile_photo.member_transaction_no = currentMember.transaction_no;
 
         try {
-
-            binding.participantImage.setImageURI(Uri.parse(Uri.parse(svars.current_app_config(this).file_path_employee_data)+currentMember.profile_photo.image));
+            binding.participantImage.setImageURI(Uri.parse(Uri.parse(svars.current_app_config(this).file_path_employee_data) + currentMember.profile_photo.image));
             binding.participantImage.setColorFilter(null);
         } catch (Exception ex) {
 
@@ -215,22 +202,23 @@ populate();
 //
 //        }
     }
+
     public static byte[] getBytes_JPG(Bitmap bitmap) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
         return stream.toByteArray();
     }
-    public static String save_app_image2(byte[] fpb)
-    {
-        String img_name="RE_DAT"+ System.currentTimeMillis()+"_IMG.JPG";
+
+    public static String save_app_image2(byte[] fpb) {
+        String img_name = "RE_DAT" + System.currentTimeMillis() + "_IMG.JPG";
 
         File file = new File(svars.current_app_config(Realm.context).file_path_employee_data);
         if (!file.exists()) {
-            Log.e(logTag,"Creating data dir: "+ (file.mkdirs()?"Successfully created":"Failed to create !"));
+            Log.e(logTag, "Creating data dir: " + (file.mkdirs() ? "Successfully created" : "Failed to create !"));
         }
         file = new File(svars.current_app_config(Realm.context).file_path_employee_data, img_name);
 
-        try (OutputStream fOutputStream = new FileOutputStream(file)){
+        try (OutputStream fOutputStream = new FileOutputStream(file)) {
 
 
             fOutputStream.write(fpb);
@@ -249,10 +237,10 @@ populate();
         return img_name;
     }
 
-    public  String get_saved_doc_base64(String data_name) {
+    public String get_saved_doc_base64(String data_name) {
         String res = "";
         try {
-            res = Base64.encodeToString(org.apache.commons.io.FileUtils.readFileToByteArray( new File(svars.current_app_config(act).file_path_employee_data, data_name)), 0);
+            res = Base64.encodeToString(org.apache.commons.io.FileUtils.readFileToByteArray(new File(svars.current_app_config(act).file_path_employee_data, data_name)), 0);
             return res;
         } catch (Exception ex) {
             Log.e("Data file retrieval :", " " + ex.getMessage());

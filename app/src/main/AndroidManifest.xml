@@ -16,6 +16,9 @@
     <uses-permission android:name="android.permission.NFC" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
+    <!-- for post notifications   -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
     <application
         android:name=".ChatApplication"
         android:allowBackup="true"
@@ -28,17 +31,18 @@
         <activity
             android:name=".activities.ConversationsVP"
             android:label="@string/title_activity_conversations_vp"
-            android:theme="@style/Theme.CSChat.NoActionBar"></activity>
+            android:theme="@style/Theme.CSChat.NoActionBar" />
+
         <activity
             android:name=".activities.ReferenceVerification"
-            android:theme="@style/Theme.CSChat.NoActionBar"></activity>
+            android:theme="@style/Theme.CSChat.NoActionBar" />
         <activity
             android:name=".activities.MainScreen"
             android:theme="@style/Theme.CSChat.NoActionBar" />
         <activity
             android:name=".activities.Signup"
             android:exported="true"
-            android:theme="@style/Theme.CSChat.NoActionBar"></activity>
+            android:theme="@style/Theme.CSChat.NoActionBar" />
         <activity
             android:name=".activities.Splash"
             android:exported="true"

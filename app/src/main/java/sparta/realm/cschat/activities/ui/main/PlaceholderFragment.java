@@ -21,6 +21,7 @@ import sparta.realm.cschat.Adapters.ConversationsAdapter;
 import sparta.realm.cschat.Models.conversation;
 import sparta.realm.cschat.activities.ConversationActivity;
 import sparta.realm.cschat.databinding.FragmentConversationsVBinding;
+import sparta.realm.cschat.utils.ui.MessageNotification;
 
 
 /**
@@ -32,6 +33,7 @@ public class PlaceholderFragment extends Fragment {
 
     private PageViewModel pageViewModel;
     private FragmentConversationsVBinding binding;
+    MessageNotification messageNotification = new MessageNotification();
 
     public static PlaceholderFragment newInstance(int index) {
         PlaceholderFragment fragment = new PlaceholderFragment();

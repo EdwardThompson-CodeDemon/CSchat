@@ -49,6 +49,7 @@ import sparta.realm.cschat.Models.MessageMessageStatus;
 import sparta.realm.cschat.Models.OnlineStatus;
 import sparta.realm.cschat.Models.message;
 import sparta.realm.cschat.activities.ConversationsVP;
+import sparta.realm.cschat.activities.Splash;
 import sparta.realm.spartautils.svars;
 import sparta.realm.utils.AppConfig;
 
@@ -158,8 +159,9 @@ public class ChatApplication extends Application {
         }
     }
 
+    //----------> changed from main activity to conversationsVP <-------
     public static void sendChannel1Notification(Context context) {
-        Intent activityIntent = new Intent(context, MainActivity.class);
+        Intent activityIntent = new Intent(context, ConversationsVP.class);
         PendingIntent contentIntent = PendingIntent.getActivity(context,
                 0, activityIntent, 0);
 
